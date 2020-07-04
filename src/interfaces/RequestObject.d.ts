@@ -1,6 +1,6 @@
 interface RequestObject {
     url: String;
     method: String;
-    headers: Object;
-    body: Object;
+    headers?: Object;
+    body?: Object;
   }

@@ -26,9 +26,10 @@ export class Scheduler {
    *
    * @returns {string} A string returning the new Cloud Task ID from the Cloud Tasks client library.
    */
-  async schedule({ request, date }: { request: RequestObject; date?: Date }) {
+  async schedule({ request, date }: { request: Partial<RequestObject>; date?: Date }) {
     // destructure request arguments
     const { url, method, headers, body } = request;
+    console.log('body', body)
 
     // Construct the fully qualified queue name.
     const parent = client.queuePath(
