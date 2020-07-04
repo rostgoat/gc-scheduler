@@ -20,12 +20,12 @@ export class Scheduler {
   }
 
   /**
-   * 
+   *
    * @param {object} request - The request object containing url, method, header and body.
    * @param {date} date - The date to schedule the task.
-   *  
+   *
    * @returns {string} A string returning the new Cloud Task ID from the Cloud Tasks client library.
-  */
+   */
   async schedule({ request, date }: { request: RequestObject; date?: Date }) {
     // destructure request arguments
     const { url, method, headers, body } = request;
@@ -41,7 +41,7 @@ export class Scheduler {
     const task: Partial<any> = {
       httpRequest: {
         url,
-      }
+      },
     };
 
     // specify task start time or start immediately
@@ -49,8 +49,12 @@ export class Scheduler {
       ? date
       : new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
-    // append headers to task object or 0 for default value
-    task.httpRequest.headers = headers ? headers : [0];
+    // append headers to task object or set Content-Type to 'application-json' per default.
+    if (headers) {
+      task.httpRequest.headers = headers;
+    } else {
+      task.httpRequest["headers"] = { "Content-Type": "application-json" };
+    }
 
     // append method to task object or POST by value
     task.httpRequest.method = method ? method : "POST";
@@ -69,14 +73,17 @@ export class Scheduler {
     console.log(task);
     const req = { parent, task };
     const [response] = await client.createTask(req);
-    console.log(`Created task ${response.name}`);
+    console.log("response", response);
+    return response;
   }
 
   /**
    * Removes an existing Cloud Task from its Queue
    * @param {string} task_id
    */
-  async delete(task_id: String) {}
+  async delete(task_id: String) {
+    await client.deleteTask({ name: task_id });
+  }
 }
 
 // const createHttpTask = async (
