@@ -1,0 +1,19 @@
+{
+  "name": "@nicejob/nicejob-scheduler",
+  "version": "1.0.0",
+  "description": "Task runner for NiceJobs using Google Tasks API.",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "author": "Rost Myshkin",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/tasks": "^2.0.1",
+    "google-gax": "^2.6.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.6"
+  }
+}
