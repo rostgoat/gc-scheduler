@@ -50,11 +50,7 @@ export class Scheduler {
       : new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     // append headers to task object or set Content-Type to 'application-json' per default.
-    if (headers) {
-      task.httpRequest.headers = headers;
-    } else {
-      task.httpRequest["headers"] = { "Content-Type": "application-json" };
-    }
+    task.httpRequest = {...task.httpRequest, headers: (headers || {"Content-Type": "application-json"})}
 
     // append method to task object or POST by value
     task.httpRequest.method = method ? method : "POST";
@@ -69,11 +65,8 @@ export class Scheduler {
     }
 
     // Send create task request.
-    console.log("Sending task:");
-    console.log(task);
     const req = { parent, task };
     const [response] = await client.createTask(req);
-    console.log("response", response);
     return response;
   }
 
@@ -85,14 +78,3 @@ export class Scheduler {
     await client.deleteTask({ name: task_id });
   }
 }
-
-// const createHttpTask = async (
-//   project = "nicejobs-task-scheduler", // Your GCP Project id
-//   queue = "testq", // Name of your Queue
-//   location = "us-west2", // The GCP region of your queue
-//   url = "https://example.com/taskhandler", // The full url path that the request will be sent to
-//   payload = "Hello, World!", // The task HTTP request body
-//   inSeconds = 0 // Delay in task execution
-// ) => {};
-
-// createHttpTask(...process.argv.slice(2)).catch(console.error);
