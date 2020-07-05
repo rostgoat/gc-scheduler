@@ -13,8 +13,7 @@
   "author": "Rost Myshkin",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/tasks": "^2.0.1",
-    "google-gax": "^2.6.1"
+    "@google-cloud/tasks": "^2.0.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.3",

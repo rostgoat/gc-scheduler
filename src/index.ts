@@ -1,4 +1,4 @@
-import { v2beta3 } from '@google-cloud/tasks';
+const { v2beta3 } = require("@google-cloud/tasks");
 
 // Instantiates a client.
 const client = new v2beta3.CloudTasksClient();
