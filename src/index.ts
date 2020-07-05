@@ -1,4 +1,4 @@
-const { v2beta3 } = require("@google-cloud/tasks");
+import { v2beta3 } from '@google-cloud/tasks';
 
 // Instantiates a client.
 const client = new v2beta3.CloudTasksClient();
@@ -16,7 +16,7 @@ export class Scheduler {
   constructor(project_id: string, queue_id: string) {
     this.project_id = project_id;
     this.queue_id = queue_id;
-    this.location = "us-west2";
+    this.location = 'us-west2';
   }
 
   /**
@@ -29,14 +29,9 @@ export class Scheduler {
   async schedule({ request, date }: { request: Partial<RequestObject>; date?: Date }) {
     // destructure request arguments
     const { url, method, headers, body } = request;
-    console.log('body', body)
 
     // Construct the fully qualified queue name.
-    const parent = client.queuePath(
-      this.project_id,
-      this.location,
-      this.queue_id
-    );
+    const parent = client.queuePath(this.project_id, this.location, this.queue_id);
 
     // task object which requires only URL by default
     const task: Partial<any> = {
@@ -46,21 +41,19 @@ export class Scheduler {
     };
 
     // specify task start time or start immediately
-    task.httpRequest.date = date
-      ? date
-      : new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+    task.httpRequest.date = date ? date : new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
     // append headers to task object or set Content-Type to 'application-json' per default.
-    task.httpRequest = {...task.httpRequest, headers: (headers || {"Content-Type": "application-json"})}
+    task.httpRequest = { ...task.httpRequest, headers: headers || { 'Content-Type': 'application-json' } };
 
     // append method to task object or POST by value
-    task.httpRequest.method = method ? method : "POST";
+    task.httpRequest.method = method ? method : 'POST';
 
     // append body to task object if method is either POST, PUT or PATCH
     if (
-      task.httpRequest.method === "POST" ||
-      task.httpRequest.method === "PUT" ||
-      task.httpRequest.method === "PATCH"
+      task.httpRequest.method === 'POST' ||
+      task.httpRequest.method === 'PUT' ||
+      task.httpRequest.method === 'PATCH'
     ) {
       task.httpRequest.body = body;
     }
@@ -75,7 +68,15 @@ export class Scheduler {
    * Removes an existing Cloud Task from its Queue
    * @param {string} task_id
    */
-  async delete(task_id: String) {
-    await client.deleteTask({ name: task_id });
+  async delete(task_id: string) {
+    return client.deleteTask({ name: task_id });
+  }
+
+  /**
+   * Return task from active tasks list.
+   * @param {object} task
+   */
+  async getTask(task: object) {
+    return client.getTask(task);
   }
 }

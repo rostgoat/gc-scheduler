@@ -6,7 +6,9 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc -p .",
-    "test": "jest --config jestconfig.json"
+    "test": "jest --config jestconfig.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json"
   },
   "author": "Rost Myshkin",
   "license": "MIT",
@@ -17,7 +19,10 @@
   "devDependencies": {
     "@types/jest": "^26.0.3",
     "jest": "^26.1.0",
+    "prettier": "^2.0.5",
     "ts-jest": "^26.1.1",
+    "tslint": "^6.1.2",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.6"
   }
 }
